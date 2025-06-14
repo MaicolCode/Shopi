@@ -1,8 +1,13 @@
 import { createContext, useState, useEffect } from 'react'
+import { checkLocalStorage } from '../utils/constants'
 
 export const ShoppingCartContext = createContext()
 
-export const ShoppingCartProvider = ({children}) => {
+export const ShoppingCartProvider = ({ children }) => {
+  // Account · Sign in
+  const [account, setAccount] = useState({})
+  const [signOut, setSignOut] = useState(false)
+
   // Shopping Cart · Increment quantity
   const [count, setCount] = useState(0)
 
@@ -37,16 +42,22 @@ export const ShoppingCartProvider = ({children}) => {
 
   useEffect(() => {
     fetch('https://api.escuelajs.co/api/v1/products')
-      .then(response => response.json())
-      .then(data => setItems(data))
+      .then((response) => response.json())
+      .then((data) => setItems(data))
+
+    checkLocalStorage()
   }, [])
 
   const filteredItemsByTitle = (items, searchByTitle) => {
-    return items?.filter(item => item.title.toLowerCase().includes(searchByTitle.toLowerCase()))
+    return items?.filter((item) =>
+      item.title.toLowerCase().includes(searchByTitle.toLowerCase())
+    )
   }
 
   const filteredItemsByCategory = (items, searchByCategory) => {
-    return items?.filter(item => item.category.name.toLowerCase().includes(searchByCategory.toLowerCase()))
+    return items?.filter((item) =>
+      item.category.name.toLowerCase().includes(searchByCategory.toLowerCase())
+    )
   }
 
   const filterBy = (searchType, items, searchByTitle, searchByCategory) => {
@@ -59,7 +70,9 @@ export const ShoppingCartProvider = ({children}) => {
     }
 
     if (searchType === 'BY_TITLE_AND_CATEGORY') {
-      return filteredItemsByCategory(items, searchByCategory).filter(item => item.title.toLowerCase().includes(searchByTitle.toLowerCase()))
+      return filteredItemsByCategory(items, searchByCategory).filter((item) =>
+        item.title.toLowerCase().includes(searchByTitle.toLowerCase())
+      )
     }
 
     if (!searchType) {
@@ -68,38 +81,57 @@ export const ShoppingCartProvider = ({children}) => {
   }
 
   useEffect(() => {
-    if (searchByTitle && searchByCategory) setFilteredItems(filterBy('BY_TITLE_AND_CATEGORY', items, searchByTitle, searchByCategory))
-    if (searchByTitle && !searchByCategory) setFilteredItems(filterBy('BY_TITLE', items, searchByTitle, searchByCategory))
-    if (!searchByTitle && searchByCategory) setFilteredItems(filterBy('BY_CATEGORY', items, searchByTitle, searchByCategory))
-    if (!searchByTitle && !searchByCategory) setFilteredItems(filterBy(null, items, searchByTitle, searchByCategory))
+    if (searchByTitle && searchByCategory)
+      setFilteredItems(
+        filterBy(
+          'BY_TITLE_AND_CATEGORY',
+          items,
+          searchByTitle,
+          searchByCategory
+        )
+      )
+    if (searchByTitle && !searchByCategory)
+      setFilteredItems(
+        filterBy('BY_TITLE', items, searchByTitle, searchByCategory)
+      )
+    if (!searchByTitle && searchByCategory)
+      setFilteredItems(
+        filterBy('BY_CATEGORY', items, searchByTitle, searchByCategory)
+      )
+    if (!searchByTitle && !searchByCategory)
+      setFilteredItems(filterBy(null, items, searchByTitle, searchByCategory))
   }, [items, searchByTitle, searchByCategory])
 
   return (
-    <ShoppingCartContext.Provider value={{
-      count,
-      setCount,
-      openProductDetail,
-      closeProductDetail,
-      isProductDetailOpen,
-      productToShow,
-      setProductToShow,
-      cartProducts,
-      setCartProducts,
-      isCheckoutSideMenuOpen,
-      openCheckoutSideMenu,
-      closeCheckoutSideMenu,
-      order,
-      setOrder,
-      items,
-      setItems,
-      searchByTitle,
-      setSearchByTitle,
-      filteredItems,
-      searchByCategory,
-      setSearchByCategory
-    }}>
+    <ShoppingCartContext.Provider
+      value={{
+        count,
+        setCount,
+        openProductDetail,
+        closeProductDetail,
+        isProductDetailOpen,
+        productToShow,
+        setProductToShow,
+        cartProducts,
+        setCartProducts,
+        isCheckoutSideMenuOpen,
+        openCheckoutSideMenu,
+        closeCheckoutSideMenu,
+        order,
+        setOrder,
+        items,
+        setItems,
+        searchByTitle,
+        setSearchByTitle,
+        filteredItems,
+        searchByCategory,
+        setSearchByCategory,
+        account,
+        signOut,
+        setSignOut
+      }}
+    >
       {children}
     </ShoppingCartContext.Provider>
   )
 }
-
