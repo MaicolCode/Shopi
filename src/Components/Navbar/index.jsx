@@ -13,8 +13,6 @@ const Navbar = () => {
     setSignOut(true)
   }
 
-  console.log(signOut)
-
   const activeStyle = 'underline underline-offset-4'
 
   return (
@@ -79,36 +77,53 @@ const Navbar = () => {
         </li>
       </ul>
       <ul className='flex items-center gap-3'>
-        <li className='text-black/60'>teff@platzi.com</li>
-        <li>
+        {!signOut ? (
+          <>
+            <li className='text-black/60'>teff@platzi.com</li>
+            <li>
+              <NavLink
+                to='/my-orders'
+                className={({ isActive }) =>
+                  isActive ? activeStyle : undefined
+                }
+              >
+                My Orders
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to='/my-account'
+                className={({ isActive }) =>
+                  isActive ? activeStyle : undefined
+                }
+              >
+                My Account
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to='/sign-in'
+                className={({ isActive }) =>
+                  isActive ? activeStyle : undefined
+                }
+                onClick={() => changeStateSignOut()}
+              >
+                Sign Out
+              </NavLink>
+            </li>
+            <li className='flex items-center'>
+              <ShoppingBagIcon className='h-6 w-6 text-black'></ShoppingBagIcon>
+              <div>{cartProducts.length}</div>
+            </li>
+          </>
+        ) : (
           <NavLink
-            to='/my-orders'
+            to='/sign-in'
             className={({ isActive }) => (isActive ? activeStyle : undefined)}
           >
-            My Orders
+            Sign In
           </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to='/my-account'
-            className={({ isActive }) => (isActive ? activeStyle : undefined)}
-          >
-            My Account
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to='/sing-in'
-            className={({ isActive }) => (isActive ? activeStyle : undefined)}
-            onClick={() => changeStateSignOut()}
-          >
-            Sign Out
-          </NavLink>
-        </li>
-        <li className='flex items-center'>
-          <ShoppingBagIcon className='h-6 w-6 text-black'></ShoppingBagIcon>
-          <div>{cartProducts.length}</div>
-        </li>
+        )}
       </ul>
     </nav>
   )
