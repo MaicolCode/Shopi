@@ -4,20 +4,35 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ShoppingCartContext } from '../../Context'
 
 function SignIn() {
-  const { setSignOut } = useContext(ShoppingCartContext)
+  const { setSignOut, account, setAccount } = useContext(ShoppingCartContext)
+  const { email, password } = account
+
   const navigate = useNavigate()
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Obtain Values
+
+    const form = new FormData(e.target)
+
+    const email = form.get('email')
+    const password = form.get('password')
+
+    const data = {
+      email,
+      password
+    }
+
+    setAccount(data)
+    localStorage.setItem('account', JSON.stringify(data))
     // Nos redirigimos la home al hacer login
     navigate('/')
     // El estado del singOut cambia debido al inicio de sesion
     setSignOut(false)
+    localStorage.setItem('sign-out', false)
   }
 
   return (
     <Layout>
-      <div className='flex flex-col items-center justify-center w-full min-h-[calc(100vh-80px)] border p-5'>
+      <div className='flex flex-col items-center justify-center w-full min-h-[calc(100vh-80px)] p-5'>
         <form
           onSubmit={handleSubmit}
           className='w-4/5 max-w-md p-6 bg-white rounded-lg shadow-md flex flex-col items-center gap-2 text-sm'
@@ -35,6 +50,7 @@ function SignIn() {
                 name='email'
                 type='email'
                 placeholder='Correo electrónico'
+                defaultValue={email}
                 required
                 className='w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200 ease-out'
               />
@@ -48,6 +64,7 @@ function SignIn() {
                 name='password'
                 type='password'
                 placeholder='Contraseña'
+                defaultValue={password}
                 required
                 className='w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200 ease-out'
               />
@@ -64,7 +81,8 @@ function SignIn() {
           <div className='w-full px-2'>
             <button
               type='submit'
-              className='w-full py-2 text-white bg-red-500 rounded-md hover:bg-red-600 transition-all duration-200'
+              disabled={Object.keys(account)?.length == 0}
+              className='disabled:bg-zinc-600 w-full py-2 text-white bg-red-500 rounded-md hover:bg-red-600 transition-all duration-200'
             >
               Iniciar Sesión
             </button>
@@ -72,7 +90,10 @@ function SignIn() {
           <div className='w-full flex flex-col items-center my-4 gap-3 text-black-600'>
             <p className='w-full text-center'>
               ¿No tienes un usuario aun?
-              <Link className='w-full ml-1 font-semibold hover:text-red-500 transition-colors duration-200'>
+              <Link
+                to='/sign-up'
+                className='w-full ml-1 font-semibold hover:text-red-500 transition-colors duration-200'
+              >
                 Registrate
               </Link>
             </p>
