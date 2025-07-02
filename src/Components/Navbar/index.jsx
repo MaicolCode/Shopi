@@ -4,8 +4,12 @@ import { ShoppingBagIcon } from '@heroicons/react/24/solid'
 import { ShoppingCartContext } from '../../Context'
 
 const Navbar = () => {
-  const { signOut, setSignOut, setSearchByCategory, cartProducts } =
+  const { account, signOut, setSignOut, setSearchByCategory, cartProducts } =
     useContext(ShoppingCartContext)
+
+  const { email } = account
+
+  console.log(account)
 
   // Function to change a state to SignOut
   const changeStateSignOut = () => {
@@ -77,9 +81,20 @@ const Navbar = () => {
         </li>
       </ul>
       <ul className='flex items-center gap-3'>
-        {!signOut ? (
-          <>
-            <li className='text-black/60'>teff@platzi.com</li>
+        {signOut ? (
+          <NavLink
+            to='/sign-in'
+            className={({ isActive }) => (isActive ? activeStyle : undefined)}
+          >
+            Sign In
+          </NavLink>
+        ) : (
+          <div
+            className={`flex items-center gap-3 ${
+              signOut ? 'hidden' : 'block'
+            }`}
+          >
+            <li className='text-black/60'>{email}</li>
             <li>
               <NavLink
                 to='/my-orders'
@@ -115,14 +130,7 @@ const Navbar = () => {
               <ShoppingBagIcon className='h-6 w-6 text-black'></ShoppingBagIcon>
               <div>{cartProducts.length}</div>
             </li>
-          </>
-        ) : (
-          <NavLink
-            to='/sign-in'
-            className={({ isActive }) => (isActive ? activeStyle : undefined)}
-          >
-            Sign In
-          </NavLink>
+          </div>
         )}
       </ul>
     </nav>
