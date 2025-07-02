@@ -6,7 +6,7 @@ export const ShoppingCartContext = createContext()
 export const ShoppingCartProvider = ({ children }) => {
   // Account · Sign in
   const [account, setAccount] = useState({})
-  const [signOut, setSignOut] = useState(false)
+  const [signOut, setSignOut] = useState(true)
 
   // Shopping Cart · Increment quantity
   const [count, setCount] = useState(0)
@@ -45,7 +45,7 @@ export const ShoppingCartProvider = ({ children }) => {
       .then((response) => response.json())
       .then((data) => setItems(data))
 
-    checkLocalStorage()
+    checkLocalStorage(setAccount, setSignOut)
   }, [])
 
   const filteredItemsByTitle = (items, searchByTitle) => {
@@ -127,6 +127,7 @@ export const ShoppingCartProvider = ({ children }) => {
         searchByCategory,
         setSearchByCategory,
         account,
+        setAccount,
         signOut,
         setSignOut
       }}
