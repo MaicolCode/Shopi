@@ -21,8 +21,18 @@ function SignIn() {
       password
     }
 
-    setAccount(data)
-    localStorage.setItem('account', JSON.stringify(data))
+    const dataFromLocalStorage = localStorage.getItem('account')
+    const parsedData = JSON.parse(dataFromLocalStorage)
+    // Validamos que el usuario exista
+    if (
+      !parsedData ||
+      parsedData.email !== data.email ||
+      parsedData.password !== data.password
+    ) {
+      alert('Usuario o contraseña incorrectos')
+      return
+    }
+
     // Nos redirigimos la home al hacer login
     navigate('/')
     // El estado del singOut cambia debido al inicio de sesion
