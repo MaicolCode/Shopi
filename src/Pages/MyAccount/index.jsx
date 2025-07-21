@@ -29,10 +29,10 @@ function MyAccount() {
   }
   return (
     <Layout>
-      <div className='flex flex-col items-center justify-center min-h-[calc(100vh-80px)]'>
+      <div className='flex flex-col items-center justify-center min-h-[calc(100vh-80px)] w-full'>
         <h1 className='text-2xl font-bold mb-4'>My Account by Shopi</h1>
 
-        <div className='bg-white p-6 rounded-md shadow-md w-96 space-y-5'>
+        <div className='bg-white p-6 rounded-md shadow-md w-5/12 space-y-5 '>
           <div className='flex justify-end text-xs w-full'>
             <button
               className='p-2 bg-black text-white rounded-md'
@@ -41,7 +41,7 @@ function MyAccount() {
               {!show ? 'Update my data' : 'Cancel changes'}
             </button>
           </div>
-          <form className='flex flex-col space-y-4' onSubmit={handleSubmit}>
+          <form className='flex flex-col space-y-4 ' onSubmit={handleSubmit}>
             <div className='w-full'>
               <label htmlFor='email' className='font-semibold text-sm'>
                 Email:{' '}
@@ -51,7 +51,10 @@ function MyAccount() {
                 id='email'
                 type='text'
                 disabled={!show}
-                className='text-md rounded-lg border border-zinc-300 my-2 w-full p-2 focus:ring-2 focus:ring-red-400 focus:outline-none focus:border-transparent'
+                className={`text-md rounded-lg border border-zinc-300 my-2 w-full p-2 focus:ring-2 focus:ring-red-400 focus:outline-none focus:border-transparent ${
+                  !show && 'text-zinc-700'
+                }
+                  `}
                 defaultValue={account.email}
                 readOnly={!show}
               />
@@ -65,7 +68,10 @@ function MyAccount() {
                 id='name'
                 type='text'
                 disabled={!show}
-                className='text-md rounded-lg border border-zinc-300 my-2 w-full p-2 focus:ring-2 focus:ring-red-400 focus:outline-none focus:border-transparent'
+                className={`text-md rounded-lg border border-zinc-300 my-2 w-full p-2 focus:ring-2 focus:ring-red-400 focus:outline-none focus:border-transparent ${
+                  !show && 'text-zinc-700'
+                }
+                  `}
                 defaultValue={account.name}
                 readOnly={!show}
               />
@@ -79,7 +85,10 @@ function MyAccount() {
                 id='password'
                 type='password'
                 disabled={!show}
-                className='text-md rounded-lg border border-zinc-300 my-2 w-full p-2 focus:ring-2 focus:ring-red-400 focus:outline-none focus:border-transparent'
+                className={`text-md rounded-lg border border-zinc-300 my-2 w-full p-2 focus:ring-2 focus:ring-red-400 focus:outline-none focus:border-transparent ${
+                  !show && 'text-zinc-700'
+                }
+                  `}
                 defaultValue={account.password}
                 readOnly={!show}
               />
