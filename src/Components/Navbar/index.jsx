@@ -4,12 +4,16 @@ import { ShoppingBagIcon } from '@heroicons/react/24/solid'
 import { ShoppingCartContext } from '../../Context'
 
 const Navbar = () => {
-  const { account, signOut, setSignOut, setSearchByCategory, cartProducts } =
-    useContext(ShoppingCartContext)
+  const {
+    account,
+    signOut,
+    setSignOut,
+    setSearchByCategory,
+    cartProducts,
+    openCheckoutSideMenu
+  } = useContext(ShoppingCartContext)
 
   const { email } = account
-
-  console.log(account)
 
   // Function to change a state to SignOut
   const changeStateSignOut = () => {
@@ -27,54 +31,66 @@ const Navbar = () => {
         </li>
         <li>
           <NavLink
-            to='/'
+            to={signOut ? '/sign-in' : '/'}
             onClick={() => setSearchByCategory()}
-            className={({ isActive }) => (isActive ? activeStyle : undefined)}
+            className={({ isActive }) =>
+              isActive && !signOut ? activeStyle : undefined
+            }
           >
             All
           </NavLink>
         </li>
         <li>
           <NavLink
-            to='/clothes'
+            to={signOut ? '/sign-in' : '/clothes'}
             onClick={() => setSearchByCategory('clothes')}
-            className={({ isActive }) => (isActive ? activeStyle : undefined)}
+            className={({ isActive }) =>
+              isActive && !signOut ? activeStyle : undefined
+            }
           >
             Clothes
           </NavLink>
         </li>
         <li>
           <NavLink
-            to='/electronics'
+            to={signOut ? '/sign-in' : '/electronics'}
             onClick={() => setSearchByCategory('electronics')}
-            className={({ isActive }) => (isActive ? activeStyle : undefined)}
+            className={({ isActive }) =>
+              isActive && !signOut ? activeStyle : undefined
+            }
           >
             Electronics
           </NavLink>
         </li>
         <li>
           <NavLink
-            to='/furnitures'
+            to={signOut ? '/sign-in' : '/furnitures'}
             onClick={() => setSearchByCategory('furnitures')}
-            className={({ isActive }) => (isActive ? activeStyle : undefined)}
+            className={({ isActive }) =>
+              isActive && !signOut ? activeStyle : undefined
+            }
           >
             Furnitures
           </NavLink>
         </li>
         <li>
           <NavLink
-            to='/toys'
+            to={signOut ? '/sign-in' : '/toys'}
             onClick={() => setSearchByCategory('toys')}
-            className={({ isActive }) => (isActive ? activeStyle : undefined)}
+            className={({ isActive }) =>
+              isActive && !signOut ? activeStyle : undefined
+            }
           >
             Toys
           </NavLink>
         </li>
         <li>
           <NavLink
-            to='/others'
+            to={signOut ? '/sign-in' : '/others'}
             onClick={() => setSearchByCategory('others')}
-            className={({ isActive }) => (isActive ? activeStyle : undefined)}
+            className={({ isActive }) =>
+              isActive && !signOut ? activeStyle : undefined
+            }
           >
             Others
           </NavLink>
@@ -126,7 +142,10 @@ const Navbar = () => {
                 Sign Out
               </NavLink>
             </li>
-            <li className='flex items-center'>
+            <li
+              className='flex items-center'
+              onClick={() => openCheckoutSideMenu()}
+            >
               <ShoppingBagIcon className='h-6 w-6 text-black'></ShoppingBagIcon>
               <div>{cartProducts.length}</div>
             </li>
